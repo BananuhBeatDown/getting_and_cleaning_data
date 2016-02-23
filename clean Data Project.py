@@ -41,7 +41,7 @@ cleanData = pd.concat([yClean['activity'], xClean], axis=1)
 cleanData = pd.melt(cleanData, id_vars=['activity'])
 
 # merge the cleanData variable with the cleanFeatutes index and drop the variable column
-cleanData = pd.merge(cleanData, cleanFeatures, left_on=['variable'], righ0t_index=True, how='inner')
+cleanData = pd.merge(cleanData, cleanFeatures, left_on=['variable'], right_index=True, how='inner')
 cleanData = cleanData.drop(['variable'], axis=1)
 
 # creating separate columns for each variable
