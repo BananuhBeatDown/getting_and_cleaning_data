@@ -34,14 +34,17 @@ xClean = xConcat.T.reindex(index=cleanFeatures.index).T
 # merge the y values with their corresponding 'activity ID' from activityLabels
 yClean = pd.merge(yConcat, activityLabels, on=['activity ID'])
 
+# merge the cleaned x value with the cleaned y value
 cleanData = pd.concat([yClean['activity'], xClean], axis=1)
 
+# change the data frame long and narrow from short and wide 
 cleanData = pd.melt(cleanData, id_vars=['activity'])
 
-cleanData = pd.merge(cleanData, cleanFeatures, left_on=['variable'], right_index=True, how='inner')
-
+# merge the cleanData variable with the cleanFeatutes index and drop the variable column
+cleanData = pd.merge(cleanData, cleanFeatures, left_on=['variable'], righ0t_index=True, how='inner')
 cleanData = cleanData.drop(['variable'], axis=1)
 
+# creating separate columns for each variable
 cleanData['phase'] = np.where(cleanData[0].str.contains(r'^t'), ['time'], ['four'])
 cleanData['signal'] = np.where(cleanData[0].str.contains(r'Body'), ['body'], ['grav'])
 cleanData['device'] = np.where(cleanData[0].str.contains(r'Acc'), ['acc'], ['gyro'])
