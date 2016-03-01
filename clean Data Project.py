@@ -4,15 +4,15 @@ import pandas as pd
 import numpy as np
 
 # change to proper directory
-os.chdir('C:\Users\Matt\Desktop\Python Projects\UCI HAR Dataset')
+os.chdir('C:\Users\Matt\Desktop\Python Files\Getting and Cleaning Data Project')
 
 # open the test and training files
-subjectTest = pd.read_csv('test\subject_test.txt', names=['subject ID'])
-subjectTrain = pd.read_csv('train\subject_train.txt', names=['subject ID'])
-xTest = pd.read_fwf('test\X_test.txt', header=None)
-xTrain = pd.read_fwf('train\X_train.txt', header=None)
-yTest = pd.read_fwf('test\Y_test.txt', names=['activity ID'])
-yTrain = pd.read_fwf('train\Y_train.txt', names=['activity ID'])
+subjectTest = pd.read_csv('subject_test.txt', names=['subject ID'])
+subjectTrain = pd.read_csv('subject_train.txt', names=['subject ID'])
+xTest = pd.read_fwf('X_test.txt', header=None)
+xTrain = pd.read_fwf('X_train.txt', header=None)
+yTest = pd.read_fwf('Y_test.txt', names=['activity ID'])
+yTrain = pd.read_fwf('Y_train.txt', names=['activity ID'])
 
 # concat the test and training files
 subjectConcat = pd.concat([subjectTest, subjectTrain], ignore_index=True)
