@@ -1,5 +1,5 @@
 # Getting and Cleaning Data
-## Course Project
+ ## Course Project
 
 1. Download the dataset if it does not already exist in the working directory (README.txt for data definitions)
 2. Load the activity and feature info
