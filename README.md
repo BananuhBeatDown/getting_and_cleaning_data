@@ -1,7 +1,7 @@
 # Getting and Cleaning Data
 ## Course Project
 
-1. Download the dataset if it does not already exist in the working directory
+1. Download the dataset if it does not already exist in the working directory (README.txt for data definitions)
 2. Load the activity and feature info
 3. Loads both the training and test datasets, keeping only those columns which reflect a mean or standard deviation
 4. Loads the activity and subject data for each dataset, and merges those columns with the dataset
