@@ -1,4 +1,11 @@
 # import needed libraries
+# -*- coding: utf-8 -*-
+"""
+Created September 1 10:13:47 2016
+
+@author: Matt Green
+"""
+
 import pandas as pd
 import numpy as np
 
@@ -59,17 +66,22 @@ cleanData = cleanData.drop(['variable'], axis=1)
 
 # %%
 
-# creating separate columns for each variable
-cleanData['phase'] = np.where(cleanData[0].str.contains(r'^t'), ['time'], ['four'])
-cleanData['signal'] = np.where(cleanData[0].str.contains(r'Body'), ['body'], ['grav'])
-cleanData['device'] = np.where(cleanData[0].str.contains(r'Acc'), ['acc'], ['gyro'])
-cleanData['jerk'] = np.where(cleanData[0].str.contains(r'Jerk'), ['jerk'], [None])
-cleanData['mag'] = np.where(cleanData[0].str.contains(r'Mag'), ['mag'], [None])
-cleanData['func'] = np.where(cleanData[0].str.contains(r'mean()'), ['mean'], ['std'])
-cleanData['domain'] = np.where(cleanData[0].str.contains(r'X$'), ['X'],
-                        np.where(cleanData[0].str.contains(r'Y$'), ['Y'],
-                        np.where(cleanData[0].str.contains(r'Z$'), ['Z'], [None])))
-cleanData = cleanData.drop([0], axis=1)
+# create helper function for creating new features
+def cleanData_feat(identifier, tag):
+    return np.where(cleanData['features'].str.contains(identifier), tag[0], tag[1])
+
+cleanData['phase'] = cleanData_feat(r'^t', ['time', 'four'])
+cleanData['signal'] = cleanData_feat(r'Body', ['body', 'grav'])
+cleanData['device'] = cleanData_feat(r'Acc', ['acc', 'gyro'])
+cleanData['jerk'] = cleanData_feat(r'Jerk', ['jerk', None])
+cleanData['mag'] = cleanData_feat(r'Mag', ['mag', None])
+cleanData['func'] = cleanData_feat(r'mean()', ['mean', 'std'])
+cleanData['domain'] = cleanData_feat(r'X$', ['X', cleanData_feat(r'Y$', ['Y', cleanData_feat(r'Z$', ['Z', None])])])
+
+# delete the features column
+cleanData = cleanData.drop(['features'], axis=1)
+
+# reorganize the data
 cleanData = cleanData[['activity', 'phase', 'signal', 'device', 'jerk', 'mag', 'func', 'domain', 'value']]
 
 # %%
