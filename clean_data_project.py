@@ -1,4 +1,3 @@
-# import needed libraries
 # -*- coding: utf-8 -*-
 """
 Created September 1 10:13:47 2016
@@ -6,9 +5,11 @@ Created September 1 10:13:47 2016
 @author: Matt Green
 """
 
+# import needed libraries
 import pandas as pd
 import numpy as np
-
+import pickle
+import os
 
 # open the test and training files
 subjectTest = pd.read_csv('subject_test.txt', names=['subject ID'])
@@ -86,4 +87,13 @@ cleanData = cleanData[['activity', 'phase', 'signal', 'device', 'jerk', 'mag', '
 
 # %%
 
-print(cleanData)
+# Save the datasets as individually
+# labelled features in a pickle file. 
+
+pickle_file = 'clean_dataset.pickle'
+f = open(pickle_file, 'wb')
+
+pickle.dump(cleanData, f, pickle.HIGHEST_PROTOCOL)
+
+statinfo = os.stat(pickle_file)
+print('Compressed pickle size:', statinfo.st_size)
