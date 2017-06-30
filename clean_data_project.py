@@ -9,15 +9,32 @@ Created September 1 10:13:47 2016
 import pandas as pd
 import numpy as np
 import pickle
-import os
+import requests
+import zipfile
+from io import BytesIO
+from os import stat
+from os.path import isdir
+
+
+# download the dataset
+if not isdir("UCI HAR Dataset"):
+    print("Dowloading...")
+    url = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+    r = requests.get(url)
+    f = zipfile.ZipFile(BytesIO(r.content))
+    f.extractall()
+    f.close()
+print("UCI HAR Dataset Downloaded.")
+
+# %%
 
 # open the test and training files
-subjectTest = pd.read_csv('subject_test.txt', names=['subject ID'])
-subjectTrain = pd.read_csv('subject_train.txt', names=['subject ID'])
-xTest = pd.read_fwf('X_test.txt', header=None)
-xTrain = pd.read_fwf('X_train.txt', header=None)
-yTest = pd.read_fwf('Y_test.txt', names=['activity ID'])
-yTrain = pd.read_fwf('Y_train.txt', names=['activity ID'])
+subjectTest = pd.read_csv('UCI HAR Dataset/test/subject_test.txt', names=['subject ID'])
+subjectTrain = pd.read_csv('UCI HAR Dataset/train/subject_train.txt', names=['subject ID'])
+xTest = pd.read_fwf('UCI HAR Dataset/test/X_test.txt', header=None)
+xTrain = pd.read_fwf('UCI HAR Dataset/train/X_train.txt', header=None)
+yTest = pd.read_fwf('UCI HAR Dataset/test/Y_test.txt', names=['activity ID'])
+yTrain = pd.read_fwf('UCI HAR Dataset/train/Y_train.txt', names=['activity ID'])
 
 # %%
 
@@ -29,8 +46,8 @@ yConcat = pd.concat([yTest, yTrain], ignore_index=True)
 # %%
 
 # open the activity and feature files
-activityLabels = pd.read_fwf('activity_labels.txt', names=['activity ID', 'activity'])
-features = pd.read_csv('features.txt', names=['features'])
+activityLabels = pd.read_fwf('UCI HAR Dataset/activity_labels.txt', names=['activity ID', 'activity'])
+features = pd.read_csv('UCI HAR Dataset/features.txt', names=['features'])
 
 # %%
 
@@ -95,5 +112,5 @@ f = open(pickle_file, 'wb')
 
 pickle.dump(cleanData, f, pickle.HIGHEST_PROTOCOL)
 
-statinfo = os.stat(pickle_file)
+statinfo = stat(pickle_file)
 print('Compressed pickle size:', statinfo.st_size)
