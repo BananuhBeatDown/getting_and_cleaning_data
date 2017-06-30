@@ -52,7 +52,7 @@ features = pd.read_csv('UCI HAR Dataset/features.txt', names=['features'])
 # %%
 
 # clean feautures by creating a list of the features the mean and std features 
-cleanFeatures = features[features['features'].str.contains(r'mean()\b|std()\b')]
+cleanFeatures = features[features['features'].str.contains(r'mean\b|std\b')]
 cleanFeatures = pd.Series(cleanFeatures['features'])
 cleanFeatures = pd.DataFrame(cleanFeatures.str.split(' ').str.get(1))
 
@@ -93,7 +93,7 @@ cleanData['signal'] = cleanData_feat(r'Body', ['body', 'grav'])
 cleanData['device'] = cleanData_feat(r'Acc', ['acc', 'gyro'])
 cleanData['jerk'] = cleanData_feat(r'Jerk', ['jerk', None])
 cleanData['mag'] = cleanData_feat(r'Mag', ['mag', None])
-cleanData['func'] = cleanData_feat(r'mean()', ['mean', 'std'])
+cleanData['func'] = cleanData_feat(r'mean', ['mean', 'std'])
 cleanData['domain'] = cleanData_feat(r'X$', ['X', cleanData_feat(r'Y$', ['Y', cleanData_feat(r'Z$', ['Z', None])])])
 
 # delete the features column
@@ -109,7 +109,6 @@ cleanData = cleanData[['activity', 'phase', 'signal', 'device', 'jerk', 'mag', '
 
 pickle_file = 'clean_dataset.pickle'
 f = open(pickle_file, 'wb')
-
 pickle.dump(cleanData, f, pickle.HIGHEST_PROTOCOL)
 
 statinfo = stat(pickle_file)
