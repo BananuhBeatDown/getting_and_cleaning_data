@@ -104,12 +104,12 @@ cleanData = cleanData[['activity', 'phase', 'signal', 'device', 'jerk', 'mag', '
 
 # %%
 
-# Save the datasets as individually
-# labelled features in a pickle file. 
-
+# save the datasets in a pickle file. 
 pickle_file = 'clean_dataset.pickle'
 f = open(pickle_file, 'wb')
 pickle.dump(cleanData, f, pickle.HIGHEST_PROTOCOL)
 
+# display file size and save confirmation
 statinfo = stat(pickle_file)
 print('Compressed pickle size:', statinfo.st_size)
+print(pickle_file + ' saved.')
