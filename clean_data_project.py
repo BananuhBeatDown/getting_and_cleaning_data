@@ -18,7 +18,7 @@ from os.path import isdir
 
 # download the dataset
 if not isdir("UCI HAR Dataset"):
-    print("Dowloading...")
+    print("Dowloading UCI HAR Dataset...")
     url = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
     r = requests.get(url)
     f = zipfile.ZipFile(BytesIO(r.content))
@@ -51,7 +51,7 @@ features = pd.read_csv('UCI HAR Dataset/features.txt', names=['features'])
 
 # %%
 
-# clean feautures by creating a list of the features the mean and std features 
+# create a list of unique mean and stanard deviation features
 cleanFeatures = features[features['features'].str.contains(r'mean\b|std\b')]
 cleanFeatures = pd.Series(cleanFeatures['features'])
 cleanFeatures = pd.DataFrame(cleanFeatures.str.split(' ').str.get(1))
@@ -68,7 +68,7 @@ yClean = pd.merge(yConcat, activityLabels, on=['activity ID'])
 
 # %%
 
-# merge the cleaned x value with the cleaned y value
+# concat the cleaned x value with the cleaned y value
 cleanData = pd.concat([yClean['activity'], xClean], axis=1)
 
 # %%
@@ -99,7 +99,7 @@ cleanData['domain'] = cleanData_feat(r'X$', ['X', cleanData_feat(r'Y$', ['Y', cl
 # delete the features column
 cleanData = cleanData.drop(['features'], axis=1)
 
-# reorganize the data
+# reorganize the data into an easy to read format
 cleanData = cleanData[['activity', 'phase', 'signal', 'device', 'jerk', 'mag', 'func', 'domain', 'value']]
 
 # %%
